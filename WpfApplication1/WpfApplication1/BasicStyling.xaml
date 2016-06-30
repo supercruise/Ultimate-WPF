@@ -1,0 +1,81 @@
+﻿<Window x:Class="WpfApplication1.BasicStyling"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication1"
+        mc:Ignorable="d"
+        Title="Basic_Styling" Height="300" Width="300">
+
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ElementName=redColorCheckBox, Path=IsChecked}" Value="True">
+                    <Setter Property="Background" Value="Red" />
+                    <!-- CONTROL.BACKGROUND, discuss TargetType! -->
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
+
+    <Window.Resources>
+        <!-- (1) Discuss x:Key, (2) Discuss BasedOn -->
+        <Style TargetType = "{x:Type Button}">
+            <Setter Property = "Height" Value = "30" />
+            <Setter Property = "Width" Value = "80" />
+            <Setter Property = "Foreground" Value = "Blue" />
+            <Setter Property = "FontSize" Value = "12" />
+            <Setter Property = "Margin" Value = "10" />
+
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Foreground" Value="red" />
+                </Trigger>                
+            </Style.Triggers>
+            
+        </Style>
+
+        <Style x:Key="practiceStyle" TargetType="{x:Type TextBox}" >
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsMouseOver" Value="True" />
+                        <Condition Property="IsKeyboardFocused"  Value="True" />
+                    </MultiTrigger.Conditions>
+                    <MultiTrigger.Setters>
+                        <Setter Property="Foreground" Value="red" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="FontSize" Value="18" />
+                    </MultiTrigger.Setters>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <SolidColorBrush x:Key="staticBrush" Color="Yellow" />
+    </Window.Resources>
+
+    <StackPanel>
+        <Button Content = "Button1"/> <!-- Discuss precedence on inline style -->
+        <Button Content = "Button2"/>
+        <Button Content = "Button3"/>
+
+        <TextBox Width="150" Background="{StaticResource staticBrush}" Style="{StaticResource practiceStyle}" />
+
+        <TextBox Width="100" Margin="10">
+            <TextBox.Style>
+                <Style TargetType="TextBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Text}" Value="disabled">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+
+                    <Setter Property="Background" Value="{Binding RelativeSource={RelativeSource Self}, Path=Text}" />
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <CheckBox x:Name = "redColorCheckBox" Content = "Set red as foreground color" Margin = "20"/>
+    </StackPanel>
+    
+</Window>
